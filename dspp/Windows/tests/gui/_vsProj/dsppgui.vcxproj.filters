@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\code\main.cpp" />
+    <ClCompile Include="..\code\window.cpp">
+      <Filter>Common\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\VulkanHelpers.cpp">
+      <Filter>Common\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_demo.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_draw.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_impl_sdl3.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_impl_vulkan.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_tables.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui_widgets.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdparty\include\imgui\imgui.cpp">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\OPLogger.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\UIEngine.cpp">
+      <Filter>Common\UI\engine</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{b354c61b-6486-4a0d-8709-8170588d0750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{31ee9596-401d-4748-be04-fa74c5e12702}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\3rdparty">
+      <UniqueIdentifier>{f3978577-1fa0-4073-86e3-380d377fb058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\3rdparty\IMGui">
+      <UniqueIdentifier>{6736b31e-f5a9-433a-8051-6b2d4b629645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Vulkan">
+      <UniqueIdentifier>{1c892b20-7d96-4e7e-92d6-158eb85646d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\UI">
+      <UniqueIdentifier>{dfac8eb1-e0c4-478d-8712-a850342179da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Window">
+      <UniqueIdentifier>{e07bcbcf-ad73-4daf-9618-dd0c2fbf7728}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\UI\engine">
+      <UniqueIdentifier>{59b6fe53-53ce-452e-91ab-9d2aabcf51a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\UI\elements">
+      <UniqueIdentifier>{8917ffef-4f92-4313-8865-2a7f2422fcfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\Resources">
+      <UniqueIdentifier>{35e44517-c686-442f-91d0-0c679ae7c3c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows\Resources\Fonts">
+      <UniqueIdentifier>{bbeb6337-0b90-4917-a07b-19f771925045}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\window.h">
+      <Filter>Common\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\VulkanHelpers.h">
+      <Filter>Common\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imgui_impl_sdl3.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imgui_impl_vulkan.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imgui_internal.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imstb_rectpack.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imstb_textedit.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imstb_truetype.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imconfig.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdparty\include\imgui\imgui.h">
+      <Filter>Common\3rdparty\IMGui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DPIFunction.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\UIEngine.h">
+      <Filter>Common\UI\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\OPLogger.h">
+      <Filter>Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\UIElement.h">
+      <Filter>Common\UI\engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\elements\testElement.h">
+      <Filter>Common\UI\elements</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\common\tests\gui\assets\fonts\anton.ttf">
+      <Filter>Windows\Resources\Fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\code\dp.manifest">
+      <Filter>Windows\Resources</Filter>
+    </Manifest>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\code\dspp.gui.fonts.rc">
+      <Filter>Windows\Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
