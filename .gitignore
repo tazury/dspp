@@ -18,6 +18,7 @@ mono_crash.*
 
 # Build results
 [Bb]uild
+[Oo]bjs/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
