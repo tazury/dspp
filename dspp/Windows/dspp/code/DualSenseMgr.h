@@ -26,7 +26,7 @@
 #include <thread>
 #include <mutex>
 #include <unordered_set>
-
+#include <chrono> // MSVC broke chrono so we will have to include it ourselves.
 
 /// <summary>
 /// This is the first thing you'll use in this library, this controls the IO of your controllers and the connection of the controllers
