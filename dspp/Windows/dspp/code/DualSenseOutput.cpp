@@ -55,10 +55,10 @@ int DualSense::Output::sendOutputUSB()
 
     // Control flags (from C# example)
     outputReport[1] = 0xff; // 0x04 | 0x08;  // 0x4 | 0x8
-    outputReport[2] = 0xff - 8;//0x01 | 0x04 | 0x10 | 0x40;
+    outputReport[2] = 0xff - 8;
 
-    outputReport[3] = leftMoter;  // Right motor (high frequency)
-    outputReport[4] = rightMoter;   // Left motor (low frequency)
+    outputReport[3] = rightMoter;  // Right motor (high frequency)
+    outputReport[4] = leftMoter;   // Left motor (low frequency)
 
     if (ledSettings.muteLED) {
         outputReport[9] = 0x01;
@@ -70,9 +70,9 @@ int DualSense::Output::sendOutputUSB()
     }
 
     // LED settings
-    outputReport[39] = ledSettings.option;
-    outputReport[43] = ledSettings.brightness;
-    outputReport[42] = ledSettings.pulseOption;
+    //outputReport[39] = 0x06; //ledSettings.option;
+    //outputReport[43] = ledSettings.brightness;
+    //outputReport[42] = ledSettings.pulseOption;
     outputReport[44] = ledSettings.playerNumber;
     outputReport[45] = ledSettings.colors.red;
     outputReport[46] = ledSettings.colors.green;
@@ -86,7 +86,7 @@ int DualSense::Output::sendOutputUSB()
 
     // Overall motors
     outputReport[38] = overallMotors;
-    int returnBytes;
+    int returnBytes = 0;
     try {
          returnBytes = hid_write(controller.hid_dev, outputReport.data(), outputReport.size());
     }
@@ -132,8 +132,8 @@ int DualSense::Output::sendOutputBT()
     // On windows, bluetooth is a bit strange. I'll have to send an outputReport with id 0xff-7 than 0xff-9
     outputReport[1] = !bluetoothF ? 0xff - 1 : 0xff - 8;//0x01 | 0x04 | 0x10 | 0x40;
 
-    outputReport[2] = leftMoter;  // Right motor (high frequency)
-    outputReport[3] = rightMoter;   // Left motor (low frequency)
+    outputReport[2] = rightMoter;  // Right motor (high frequency)
+    outputReport[3] = leftMoter;   // Left motor (low frequency)
 
     if (ledSettings.muteLED) {
         outputReport[8] = 0x01;
@@ -145,9 +145,9 @@ int DualSense::Output::sendOutputBT()
     }
 
     // LED settings
-    outputReport[39] = ledSettings.option;
-    outputReport[42] = ledSettings.brightness;
-    outputReport[41] = ledSettings.pulseOption;
+    //outputReport[39] = ledSettings.option;
+    //outputReport[42] = ledSettings.brightness;
+    //outputReport[41] = ledSettings.pulseOption;
     outputReport[43] = ledSettings.playerNumber;
     outputReport[44] = ledSettings.colors.red;
     outputReport[45] = ledSettings.colors.green;
@@ -168,7 +168,7 @@ int DualSense::Output::sendOutputBT()
 
     bluetoothF = true;
 
-    int returnBytes;
+    int returnBytes = 0;
     try {
         returnBytes = hid_write(controller.hid_dev, outputReportOG.data(), outputReportOG.size());
     }

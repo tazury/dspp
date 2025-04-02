@@ -32,9 +32,9 @@ namespace DualSense {
         // LED configuration
         struct LedSettings {
             bool muteLED = false;
-            uint8_t option = 0x00;
-            uint8_t brightness = 0x00;
-            uint8_t pulseOption = 0x00;
+            //uint8_t option = 0x00;
+            //uint8_t brightness = 0x00;
+            //uint8_t pulseOption = 0x00;
             uint8_t playerNumber = 0x00;
             struct {
                 uint8_t red = 0x00;

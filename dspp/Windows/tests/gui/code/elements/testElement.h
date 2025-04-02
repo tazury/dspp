@@ -9,9 +9,44 @@ public:
     WindowElement(const std::string& name, Window* window)
         : UIElement(name), win(window) {
     }
-
+    void RegisterController(int playerID, DualSense::DualSense* ctrl) {
+        if (!activeControllers[playerID]) {
+            activeControllers[playerID] = true;
+            ctrl->input.addListener([this, playerID](DualSense::Input::InputState state, double timestamp) {
+                controllerStates[playerID] = state; // Store the latest input state
+                });
+            ctrl->input.start();
+        }
+    }
     void OnDestroy() override {
         mgr->~DualSenseMgr();
+    }
+
+    
+    void RenderAnalogSticks(float lx, float ly, float rx, float ry) {
+        ImVec2 cursor = ImGui::GetCursorScreenPos();
+        float radius = 40.0f;
+
+        // Left Stick
+        ImVec2 leftCenter = { cursor.x + radius, cursor.y + radius };
+        ImVec2 leftStickPos = { leftCenter.x + lx * radius, leftCenter.y + ly * radius };
+
+        // Right Stick (placed 120px to the right for spacing)
+        ImVec2 rightCenter = { leftCenter.x + 120.0f, leftCenter.y };
+        ImVec2 rightStickPos = { rightCenter.x + rx * radius, rightCenter.y + ry * radius };
+
+        ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+        // Draw Left Stick Circle
+        drawList->AddCircle(leftCenter, radius, IM_COL32(255, 255, 255, 255), 32);
+        drawList->AddText(ImVec2(leftStickPos.x - 4, leftStickPos.y - 6), IM_COL32(255, 0, 0, 255), "L");
+
+        // Draw Right Stick Circle
+        drawList->AddCircle(rightCenter, radius, IM_COL32(255, 255, 255, 255), 32);
+        drawList->AddText(ImVec2(rightStickPos.x - 4, rightStickPos.y - 6), IM_COL32(0, 255, 0, 255), "R");
+
+        // Reserve space
+        ImGui::Dummy(ImVec2(200, radius * 2));
     }
 
     void OnInit() override {
@@ -120,19 +155,12 @@ public:
 
             uint8_t min = 0x00;
             uint8_t max = 0xff;
+            uint8_t max2 = 0x02;
 
             // LED Settings Section
             if (ImGui::CollapsingHeader("LED Settings")) {
                 ImGui::Checkbox("Mute LED", &output.ledSettings.muteLED);
-
-
-
-                // Option and brightness settings
-                ImGui::SliderScalar("Option", ImGuiDataType_U8, &output.ledSettings.option, &min, &max);
-                ImGui::SliderScalar("Brightness", ImGuiDataType_U8, &output.ledSettings.brightness, &min, &max);
-
-                // Pulse Option setting
-                ImGui::SliderScalar("Pulse Option", ImGuiDataType_U8, &output.ledSettings.pulseOption, &min, &max);
+           
 
                 // Player number setting
                 ImGui::SliderScalar("Player Number", ImGuiDataType_U8, &output.ledSettings.playerNumber, &min, &max);
@@ -155,25 +183,25 @@ public:
 
             // Trigger Settings Section
             if (ImGui::CollapsingHeader("Left Trigger Settings")) {
-                ImGui::SliderScalar("Mode", ImGuiDataType_U8, &output.leftTrigger.mode, &min, &max);
-                ImGui::SliderScalar("Force 1", ImGuiDataType_U8, &output.leftTrigger.force1, &min, &max);
-                ImGui::SliderScalar("Force 2", ImGuiDataType_U8, &output.leftTrigger.force2, &min, &max);
-                ImGui::SliderScalar("Force 3", ImGuiDataType_U8, &output.leftTrigger.force3, &min, &max);
-                ImGui::SliderScalar("Force 4", ImGuiDataType_U8, &output.leftTrigger.force4, &min, &max);
-                ImGui::SliderScalar("Force 5", ImGuiDataType_U8, &output.leftTrigger.force5, &min, &max);
-                ImGui::SliderScalar("Force 6", ImGuiDataType_U8, &output.leftTrigger.force6, &min, &max);
-                ImGui::SliderScalar("Force 7", ImGuiDataType_U8, &output.leftTrigger.force7, &min, &max);
+                ImGui::SliderScalar("L Mode", ImGuiDataType_U8, &output.leftTrigger.mode, &min, &max);
+                ImGui::SliderScalar("L Force 1", ImGuiDataType_U8, &output.leftTrigger.force1, &min, &max);
+                ImGui::SliderScalar("L Force 2", ImGuiDataType_U8, &output.leftTrigger.force2, &min, &max);
+                ImGui::SliderScalar("L Force 3", ImGuiDataType_U8, &output.leftTrigger.force3, &min, &max);
+                ImGui::SliderScalar("L Force 4", ImGuiDataType_U8, &output.leftTrigger.force4, &min, &max);
+                ImGui::SliderScalar("L Force 5", ImGuiDataType_U8, &output.leftTrigger.force5, &min, &max);
+                ImGui::SliderScalar("L Force 6", ImGuiDataType_U8, &output.leftTrigger.force6, &min, &max);
+                ImGui::SliderScalar("L Force 7", ImGuiDataType_U8, &output.leftTrigger.force7, &min, &max);
             }
 
             if (ImGui::CollapsingHeader("Right Trigger Settings")) {
-                ImGui::SliderScalar("Mode", ImGuiDataType_U8, &output.rightTrigger.mode, &min, &max);
-                ImGui::SliderScalar("Force 1", ImGuiDataType_U8, &output.rightTrigger.force1, &min, &max);
-                ImGui::SliderScalar("Force 2", ImGuiDataType_U8, &output.rightTrigger.force2, &min, &max);
-                ImGui::SliderScalar("Force 3", ImGuiDataType_U8, &output.rightTrigger.force3, &min, &max);
-                ImGui::SliderScalar("Force 4", ImGuiDataType_U8, &output.rightTrigger.force4, &min, &max);
-                ImGui::SliderScalar("Force 5", ImGuiDataType_U8, &output.rightTrigger.force5, &min, &max);
-                ImGui::SliderScalar("Force 6", ImGuiDataType_U8, &output.rightTrigger.force6, &min, &max);
-                ImGui::SliderScalar("Force 7", ImGuiDataType_U8, &output.rightTrigger.force7, &min, &max);
+                ImGui::SliderScalar("R Mode", ImGuiDataType_U8, &output.rightTrigger.mode, &min, &max);
+                ImGui::SliderScalar("R Force 1", ImGuiDataType_U8, &output.rightTrigger.force1, &min, &max);
+                ImGui::SliderScalar("R Force 2", ImGuiDataType_U8, &output.rightTrigger.force2, &min, &max);
+                ImGui::SliderScalar("R Force 3", ImGuiDataType_U8, &output.rightTrigger.force3, &min, &max);
+                ImGui::SliderScalar("R Force 4", ImGuiDataType_U8, &output.rightTrigger.force4, &min, &max);
+                ImGui::SliderScalar("R Force 5", ImGuiDataType_U8, &output.rightTrigger.force5, &min, &max);
+                ImGui::SliderScalar("R Force 6", ImGuiDataType_U8, &output.rightTrigger.force6, &min, &max);
+                ImGui::SliderScalar("R Force 7", ImGuiDataType_U8, &output.rightTrigger.force7, &min, &max);
             }
 
             // Motor Settings Section
@@ -193,6 +221,49 @@ public:
             ImGui::SetNextWindowPos(input_pos);
             ImGui::SetNextWindowSize(input_size);
             ImGui::Begin("Input Section", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+            if (!activeControllers[playerIDC]) {
+                RegisterController(playerIDC, controllers[playerIDC - 1]);
+            }
+
+            auto& state = controllerStates[playerIDC];
+            
+            ImGui::Text("Player %d", playerIDC);
+
+            // Button States
+            ImGui::Text("Buttons:");
+            for (int i = 0; i < static_cast<int>(DualSense::Input::Button::_Count); i++) {
+                if (state.buttons[i]) {
+                    ImGui::Text("%d: Pressed", i);
+                }
+            }
+
+            // Axis (Stick) Data
+            RenderAnalogSticks(state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickY)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
+        //    RenderAnalogStick("Right Stick", state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
+            ImGui::Text("Left Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickY)]);
+            ImGui::Text("Right Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
+
+            // Triggers
+            ImGui::Text("L2: %.2f (Effect: %d)", state.axes[4], state.triggers[0].inEffect);
+            ImGui::Text("R2: %.2f (Effect: %d)", state.axes[5], state.triggers[1].inEffect);
+
+            // Touchpad
+            if (state.touchPoints[0].active)
+                ImGui::Text("Touch 1: ID=%d X=%ld Y=%ld", state.touchPoints[0].id, state.touchPoints[0].x, state.touchPoints[0].y);
+            if (state.touchPoints[1].active)
+                ImGui::Text("Touch 2: ID=%d X=%ld Y=%ld", state.touchPoints[1].id, state.touchPoints[1].x, state.touchPoints[1].y);
+
+            // Motion Sensors
+            ImGui::Text("Accelerometer: X=%.2f Y=%.2f Z=%.2f", state.motion.accelerometer[0], state.motion.accelerometer[1], state.motion.accelerometer[2]);
+            ImGui::Text("Gyroscope: X=%.2f Y=%.2f Z=%.2f", state.motion.gyroscope[0], state.motion.gyroscope[1], state.motion.gyroscope[2]);
+
+            if (state.buttons[static_cast<size_t>(DualSense::Input::Button::Mute)]) {
+                state.microphoneMuted = !state.microphoneMuted;
+            }
+
+            // Microphone
+            ImGui::Text("Microphone Muted: %s", state.microphoneMuted ? "Yes" : "No");
+
             ImGui::Text("Input Section");
             ImGui::End();
 
@@ -203,6 +274,30 @@ public:
             ImGui::SetNextWindowSize(controller_size);
             ImGui::Begin("Controller Section", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
             ImGui::Text("Controller Section (Live Controller will appear here)");
+            ImDrawList* drawList = ImGui::GetWindowDrawList();
+            ImVec2 controllerPos = ImGui::GetCursorScreenPos();
+
+            drawList->AddRectFilled(controllerPos, ImVec2(controllerPos.x + 300, controllerPos.y + 180), IM_COL32(50, 50, 50, 255));
+
+            // Render Analog Sticks
+            RenderAnalogSticks(state.axes[0], state.axes[1], state.axes[2], state.axes[3]);
+
+            // Highlight Buttons
+            for (int i = 0; i < static_cast<int>(DualSense::Input::Button::_Count); i++) {
+                if (state.buttons[i]) {
+                    ImGui::Text("Button %d Pressed", i);
+                }
+            }
+
+
+
+            // Touchpad Interaction
+            if (state.touchPoints[0].active)
+                drawList->AddCircleFilled(ImVec2(controllerPos.x + state.touchPoints[0].x * 0.3f, controllerPos.y + state.touchPoints[0].y * 0.3f), 5.0f, IM_COL32(0, 0, 255, 255));
+            if (state.touchPoints[1].active)
+                drawList->AddCircleFilled(ImVec2(controllerPos.x + state.touchPoints[1].x * 0.3f, controllerPos.y + state.touchPoints[1].y * 0.3f), 5.0f, IM_COL32(0, 255, 255, 255));
+
+
             ImGui::End();
         }
 
@@ -252,4 +347,6 @@ private:
     int playerIDC = 1;
     DualSenseMgr* mgr = new DualSenseMgr();
     std::map<int, DualSense::DualSense*> disconnectedCtrls;
+    std::map<int, bool> activeControllers;
+    std::map<int, DualSense::Input::InputState> controllerStates;
 };
