@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DS++ Commandline Test", "te
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DS++ Gui Test", "tests\gui\_vsProj\dsppgui.vcxproj", "{AA2F9C8C-E58D-42CA-AD7A-9A768697A910}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AE14D06E-CB42-4CF2-93DC-0036AC38EBF0} = {AE14D06E-CB42-4CF2-93DC-0036AC38EBF0}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0C2BBEBC-4D2C-4D2A-9345-5C3C692BF135}"
 EndProject
