@@ -1,0 +1,28 @@
+name: Testing MSBuild
+
+on:
+  push:
+    branches: [ "latest" ]
+  pull_request:
+    branches: [ "latest" ]
+
+env:
+  SOLUTION_FILE_PATH: "./dspp/Windows/DualSense C++ For Windows.sln"
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build Solution
+      run: msbuild "${{env.SOLUTION_FILE_PATH}}" /p:Configuration=${{env.BUILD_CONFIGURATION}} /m
