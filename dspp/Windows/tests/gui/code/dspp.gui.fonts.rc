@@ -24,7 +24,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Font
 //
 
-IDR_FONT1               FONT                    "C:\\Users\\isloe\\Documents\\exper\\DualSense C++\\dspp\\common\\tests\\gui\\assets\\fonts\\anton.ttf"
+IDR_FONT1               FONT                    "..\\..\\..\\..\\common\\tests\\gui\\assets\\fonts\\anton.ttf"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
