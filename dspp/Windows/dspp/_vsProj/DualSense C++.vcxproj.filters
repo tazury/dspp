@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DualSense">
+      <UniqueIdentifier>{649b24a5-db93-431e-a694-91791084177a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{5c0c1336-2f6c-41e0-a9bc-1864dedc3179}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DualSense\Manager">
+      <UniqueIdentifier>{843abc4a-3919-4e95-9bfd-eadbf352938f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DualSense\Controller">
+      <UniqueIdentifier>{92b72ab4-2c68-4d16-aebf-4bca45116589}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DualSense\Controller\Output">
+      <UniqueIdentifier>{515e69b3-26db-4cbd-a70a-98bf03fd65d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DualSense\Controller\Input">
+      <UniqueIdentifier>{8cfbd6e1-4540-4811-9258-3f8b4235d84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DualSense\Controller\Utilities">
+      <UniqueIdentifier>{5509cb1b-3a6e-493c-997a-0fab8b8c2279}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\code\Logger.h">
+      <Filter>Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DualSenseMgr.h">
+      <Filter>DualSense\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DualSense.h">
+      <Filter>DualSense\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DSPPInfo.h" />
+    <ClInclude Include="..\code\DualSenseInput.h">
+      <Filter>DualSense\Controller\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DualSenseChecksum.h">
+      <Filter>DualSense\Controller\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\code\DualSenseOutput.h">
+      <Filter>DualSense\Controller\Output</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\code\Logger.cpp">
+      <Filter>Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\DualSenseMgr.cpp">
+      <Filter>DualSense\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\DualSense.cpp">
+      <Filter>DualSense\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\DualSenseChecksum.cpp">
+      <Filter>DualSense\Controller\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\DualSenseInput.cpp">
+      <Filter>DualSense\Controller\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\code\DualSenseOutput.cpp">
+      <Filter>DualSense\Controller\Output</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

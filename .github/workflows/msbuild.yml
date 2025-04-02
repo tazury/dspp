@@ -1,0 +1,33 @@
+name: Testing MSBuild
+
+on:
+  push:
+    branches: [ "latest" ]
+  pull_request:
+    branches: [ "latest" ]
+
+env:
+  SOLUTION_FILE_PATH: "./dspp/Windows/DualSense C++ For Windows.sln"
+  BUILD_CONFIGURATION: Release
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: 'list vc tools'
+      run: |
+        get-childitem -Path 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC'
+        get-content 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.props'
+
+    - name: Set up MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Build Solution
+      run: msbuild "${{env.SOLUTION_FILE_PATH}}" /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformToolset=v143 /p:LanguageStandard=stdcpp20 /p:VCToolsVersion=14.43.34808 /m
