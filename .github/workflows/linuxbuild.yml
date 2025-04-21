@@ -21,15 +21,15 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/OSX/dspp
+        working-directory: dspp/linux/dspp
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/OSX/dspp
+        working-directory: dspp/linux/dspp
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/OSX/dspp
+        working-directory: dspp/linux/dspp
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -37,7 +37,7 @@ jobs:
           name: dspp
           path: dspp/OSX/dspp/build
   build-cmdline:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     name: Builds DSPP Commandline test
     needs: build-dspp
     steps:
@@ -57,17 +57,17 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/OSX/tests/cmdline
+        working-directory: dspp/linux/tests/cmdline
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/OSX/tests/cmdline
+        working-directory: dspp/linux/tests/cmdline
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/OSX/tests/cmdline
+        working-directory: dspp/linux/tests/cmdline
   build-gui:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     name: Builds DSPP GUI test
     needs: build-dspp
     steps:
@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dspp
-          path: dspp/OSX/dspp/build
+          path: dspp/linux/dspp/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -87,12 +87,12 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/OSX/tests/gui
+        working-directory: dspp/linux/tests/gui
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/OSX/tests/gui
+        working-directory: dspp/linux/tests/gui
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/OSX/tests/gui
+        working-directory: dspp/linux/tests/gui
