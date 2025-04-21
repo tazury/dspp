@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dspp
-          path: build/
+          path: dspp/OSX/dspp/build
   build-cmdline:
     runs-on: macos-latest
     name: Builds DSPP Commandline test
