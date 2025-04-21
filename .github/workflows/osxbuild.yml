@@ -60,7 +60,7 @@ jobs:
         working-directory: dspp/OSX/tests/cmdline
 
       - name: Run CMake (Xcode Generator)
-        run: cmake -S . -B build -G Xcode
+        run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES=x86_64
         working-directory: dspp/OSX/tests/cmdline
 
       - name: Build Project
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Download artifact from DSPP
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dspp
           path: dspp/OSX/dspp/build
@@ -90,7 +90,7 @@ jobs:
         working-directory: dspp/OSX/tests/gui
 
       - name: Run CMake (Xcode Generator)
-        run: cmake -S . -B build -G Xcode
+        run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES=x86_64
         working-directory: dspp/OSX/tests/gui
 
       - name: Build Project
