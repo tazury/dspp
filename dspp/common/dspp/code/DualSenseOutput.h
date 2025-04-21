@@ -1,3 +1,19 @@
+/*
+* This is an common file, meaning that this is used in all platforms. So don't stress anything.
+
+* Title: DS++ DualSense Output
+* Author: Munashe Dirwayi [wanomaniac]
+* Purpose: "This allows you to send an output to change the controller appearance (Like colors, etc)
+           Utilize the examples to understand this well"
+
+* Compatibility: Designed in C++ 20 | C Standard 17
+
+* Updates -
+          ** UPDATES WILL BE HERE **
+
+* Known issues -
+          ** BUGS WILL BE REPORTED HERE **
+*/
 #pragma once
 #include <cstdint>
 #include <array>
@@ -20,6 +36,7 @@ namespace DualSense {
     };
     class Output {
     public:
+        uint8_t validityFlag = 0xff - 8;
         bool bluetoothF = false;
         CtrlInfo& controller;
         int outputSeq_ = 1;
@@ -32,9 +49,9 @@ namespace DualSense {
         // LED configuration
         struct LedSettings {
             bool muteLED = false;
-            uint8_t option = 0x00;
-            uint8_t brightness = 0x00;
-            uint8_t pulseOption = 0x00;
+            //uint8_t option = 0x00;
+            //uint8_t brightness = 0x00;
+            //uint8_t pulseOption = 0x00;
             uint8_t playerNumber = 0x00;
             struct {
                 uint8_t red = 0x00;

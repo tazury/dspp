@@ -1,3 +1,20 @@
+/*
+* THIS IS DESIGNED FOR CLION with Ubuntu 24.04.2! If that isn't your platform, please check if there are any others!
+* It is recommanded to build from source if you have an older version but note the gcc version.
+ *
+* Title: DS++ Utilities
+* Author: Munashe Dirwayi [wanomaniac]
+* Purpose: "I created an utility file because GCC was complaining about repeated functions.
+           This is the main way of accessing most of the library."
+
+* Compatibility: Designed in C++ 20 | C Standard 17 [gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0]
+
+* Updates -
+          ** UPDATES WILL BE HERE **
+
+* Known issues -
+          ** BUGS WILL BE REPORTED HERE **
+*/
 #include <pthread.h>
 #include <string>
 

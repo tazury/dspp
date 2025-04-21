@@ -1,5 +1,5 @@
 ﻿/*
-* THIS IS DESIGNED FOR Visual Studio 2022 (v143) with the Windows SDK 10.0! If that isn't your platform, please check if there are any others!
+* This is an common file, meaning that this is used in all platforms. So don't stress anything.
 
 * Title: Sony Playstation©️ 5 DualSense Manager
 * Author: Munashe Dirwayi [wanomaniac]
@@ -18,6 +18,7 @@
 * Known issues -
           ** BUGS WILL BE REPORTED HERE **
 */
+
 #pragma once
 #include "DualSense.h"
 #include "DualSenseInput.h"
@@ -26,7 +27,7 @@
 #include <thread>
 #include <mutex>
 #include <unordered_set>
-
+#include <chrono> // MSVC broke chrono so we will have to include it ourselves. [https://developercommunity.visualstudio.com/t/std::chrono-literals-broken/10856672]
 
 /// <summary>
 /// This is the first thing you'll use in this library, this controls the IO of your controllers and the connection of the controllers

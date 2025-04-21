@@ -1,3 +1,7 @@
+/*
+ * The header is common but the .cpp file is platform specific.
+ */
+
 #include "DualSenseInput.h"
 #include "DualSense.h"
 #include "Logger.h"

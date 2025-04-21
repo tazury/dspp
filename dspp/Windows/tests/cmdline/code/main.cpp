@@ -1,6 +1,6 @@
 #include <Windows.h>
-#include <include/DualSenseMgr.h>
-#include <include/Logger.h>
+#include <DualSenseMgr.h>
+#include <Logger.h>
 #include <iostream>
 #include <atomic>
 #include <thread>

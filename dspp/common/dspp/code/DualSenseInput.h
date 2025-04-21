@@ -1,3 +1,19 @@
+/*
+* This is an common file, this can be used in any platform so do not worry.
+
+* Title: DS++ DualSense Input Class
+* Author: Munashe Dirwayi [wanomaniac]
+* Purpose: "This is how you can recieve your inputs from your controller. It is recommanded to read the examples to utilize this properly."
+
+* Compatibility: Designed in C++ 20 | C Standard 17
+
+* Updates -
+          ** UPDATES WILL BE HERE **
+
+* Known issues -
+          - USB Controllers have the wrong left stick and right stick values.
+*/
+
 #pragma once
 #include <cstdint>
 #include <array>
@@ -100,9 +116,9 @@ private: // Parsing Input
 
         InputState parseReport(const std::vector<uint8_t>& report);
 
-        void parseButtons(const std::vector<uint8_t>& report, InputState& state, bool connectionType, int reportID);
+        static void parseButtons(const std::vector<uint8_t>& report, InputState& state, bool connectionType, int reportID);
 
-        void parseAnalogInputs(const std::vector<uint8_t>& report, InputState& state, bool connectionType, int reportID);
+        static void parseAnalogInputs(const std::vector<uint8_t>& report, InputState& state, bool connectionType, int reportID);
 
         void parseTouchpad(const std::vector<uint8_t>& report, InputState& state, bool connectionType, int reportID);
 

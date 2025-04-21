@@ -1,3 +1,4 @@
+
 #include "DualSenseChecksum.h"
 
 	void DualSense::DualSenseChecksum::fillChecksum(uint8_t reportId, std::array<uint8_t, 78>& reportData) {

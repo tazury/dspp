@@ -13,11 +13,21 @@ mkdir -p "$BUILD_DIR/dspp/include"
 mkdir -p "$BUILD_DIR/dspp/libs"
 
 # Copy .h files to the include folder
-echo "Copying .h files to $BUILD_DIR/dspp/include..."
-for f in "$SOURCE_DIR"/*.h; do
-    cp "$f" "$BUILD_DIR/dspp/include/"
-done
+IFS=',' read -ra DIR_ARRAY <<< "$SOURCE_DIR"
 
+# Iterate over each directory
+for DIR in "${DIR_ARRAY[@]}"; do
+    DIR="$(echo "$DIR" | xargs)" # Trim whitespace
+    echo "Processing $DIR..."
+
+    # Copy all .h files from the directory
+    for FILE in "$DIR"/*.h; do
+        if [ -f "$FILE" ]; then
+            echo "Copying $FILE"
+            cp "$FILE" "$BUILD_DIR/dspp/include/"
+        fi
+    done
+done
 # Move 3rd Party files to the include folder
 echo "Copying 3rd Party includes..."
 find "$TPTY_DIR" -type d -name "include" | while read dir; do

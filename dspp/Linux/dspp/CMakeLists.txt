@@ -8,7 +8,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(POSTBUILD_SCRIPT "${CMAKE_SOURCE_DIR}/instructions/postbuild.sh")
 
 # Define your build output directories
-set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/code")
+set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/code,${CMAKE_SOURCE_DIR}/../../common/dspp/code")
 set(BUILD_DIR "${CMAKE_BINARY_DIR}")
 set(TPTY_DIR "${CMAKE_SOURCE_DIR}/3rdparty")
 
@@ -17,17 +17,17 @@ add_definitions(-DDSBASEDIR="${CMAKE_CURRENT_SOURCE_DIR}/code")
 
     # Add your source directory
     add_library(dspp STATIC
-            code/DSPPInfo.h
-            code/DualSense.cpp
-            code/DualSense.h
-            code/DualSenseChecksum.cpp
-            code/DualSenseChecksum.h
+            ../../common/dspp/code/DSPPInfo.h
+            ../../common/dspp/code/DualSense.cpp
+            ../../common/dspp/code/DualSense.h
+            ../../common/dspp/code/DualSenseChecksum.cpp
+            ../../common/dspp/code/DualSenseChecksum.h
             code/DualSenseInput.cpp
-            code/DualSenseInput.h
+            ../../common/dspp/code/DualSenseInput.h
             code/DualSenseMgr.cpp
-            code/DualSenseMgr.h
-            code/DualSenseOutput.cpp
-            code/DualSenseOutput.h
+            ../../common/dspp/code/DualSenseMgr.h
+            ../../common/dspp/code/DualSenseOutput.cpp
+            ../../common/dspp/code/DualSenseOutput.h
             code/Logger.cpp
             code/Logger.h
             code/utils.h
@@ -39,6 +39,7 @@ target_compile_options(dspp PRIVATE -g)
     # Optional: Specify include directories
     target_include_directories(dspp PUBLIC
             ${CMAKE_CURRENT_SOURCE_DIR}/code
+            ../../common/dspp/code/
     )
 
     # Optional: Set versioning

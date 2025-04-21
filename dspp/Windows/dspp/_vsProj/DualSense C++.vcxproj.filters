@@ -27,20 +27,20 @@
     <ClInclude Include="..\code\Logger.h">
       <Filter>Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\code\DualSenseMgr.h">
-      <Filter>DualSense\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\code\DualSense.h">
+    <ClInclude Include="..\..\..\common\dspp\code\DSPPInfo.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSense.h">
       <Filter>DualSense\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="..\code\DSPPInfo.h" />
-    <ClInclude Include="..\code\DualSenseInput.h">
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseInput.h">
       <Filter>DualSense\Controller\Input</Filter>
     </ClInclude>
-    <ClInclude Include="..\code\DualSenseChecksum.h">
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseChecksum.h">
       <Filter>DualSense\Controller\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="..\code\DualSenseOutput.h">
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseMgr.h">
+      <Filter>DualSense\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseOutput.h">
       <Filter>DualSense\Controller\Output</Filter>
     </ClInclude>
   </ItemGroup>
@@ -51,16 +51,16 @@
     <ClCompile Include="..\code\DualSenseMgr.cpp">
       <Filter>DualSense\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\code\DualSense.cpp">
-      <Filter>DualSense\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="..\code\DualSenseChecksum.cpp">
-      <Filter>DualSense\Controller\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="..\code\DualSenseInput.cpp">
       <Filter>DualSense\Controller\Input</Filter>
     </ClCompile>
-    <ClCompile Include="..\code\DualSenseOutput.cpp">
+    <ClCompile Include="..\..\..\common\dspp\code\DualSense.cpp">
+      <Filter>DualSense\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\common\dspp\code\DualSenseChecksum.cpp">
+      <Filter>DualSense\Controller\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\common\dspp\code\DualSenseOutput.cpp">
       <Filter>DualSense\Controller\Output</Filter>
     </ClCompile>
   </ItemGroup>

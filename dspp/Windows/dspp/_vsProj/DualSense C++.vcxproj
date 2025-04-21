@@ -106,7 +106,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>../3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../3rdparty;../../../common/dspp/code;../code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -117,7 +117,7 @@
       <AdditionalDependencies>../3rdparty/hidapi/$(PlatformShortName)/$(Configuration)/hidapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>..\instructions\postbuild.bat "..\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
+      <Command>..\instructions\postbuild.bat "..\code,..\..\..\common\dspp\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -131,7 +131,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>../3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../3rdparty;../../../common/dspp/code;../code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -144,7 +144,7 @@
       <AdditionalDependencies>../3rdparty/hidapi/$(PlatformShortName)/$(Configuration)/hidapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>..\instructions\postbuild.bat "..\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
+      <Command>..\instructions\postbuild.bat "..\code,..\..\..\common\dspp\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -156,7 +156,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>../3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../3rdparty;../../../common/dspp/code;../code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -167,7 +167,7 @@
       <AdditionalDependencies>../3rdparty/hidapi/$(PlatformShortName)/$(Configuration)/hidapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>..\instructions\postbuild.bat "..\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
+      <Command>..\instructions\postbuild.bat "..\code,..\..\..\common\dspp\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -181,7 +181,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <AdditionalIncludeDirectories>../3rdparty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../3rdparty;../../../common/dspp/code;../code;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -194,25 +194,25 @@
       <AdditionalDependencies>../3rdparty/hidapi/$(PlatformShortName)/$(Configuration)/hidapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <PostBuildEvent>
-      <Command>..\instructions\postbuild.bat "..\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
+      <Command>..\instructions\postbuild.bat "..\code,..\..\..\common\dspp\code" "..\build\$(PlatformShortName)\$(Configuration)" "..\3rdparty\"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\code\DSPPInfo.h" />
-    <ClInclude Include="..\code\DualSense.h" />
-    <ClInclude Include="..\code\DualSenseChecksum.h" />
-    <ClInclude Include="..\code\DualSenseMgr.h" />
-    <ClInclude Include="..\code\DualSenseInput.h" />
-    <ClInclude Include="..\code\DualSenseOutput.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DSPPInfo.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSense.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseChecksum.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseInput.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseMgr.h" />
+    <ClInclude Include="..\..\..\common\dspp\code\DualSenseOutput.h" />
     <ClInclude Include="..\code\Logger.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\code\DualSense.cpp" />
-    <ClCompile Include="..\code\DualSenseChecksum.cpp" />
+    <ClCompile Include="..\..\..\common\dspp\code\DualSense.cpp" />
+    <ClCompile Include="..\..\..\common\dspp\code\DualSenseChecksum.cpp" />
+    <ClCompile Include="..\..\..\common\dspp\code\DualSenseOutput.cpp" />
     <ClCompile Include="..\code\DualSenseInput.cpp" />
     <ClCompile Include="..\code\DualSenseMgr.cpp" />
-    <ClCompile Include="..\code\DualSenseOutput.cpp" />
     <ClCompile Include="..\code\Logger.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

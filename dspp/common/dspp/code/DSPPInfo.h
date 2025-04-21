@@ -1,6 +1,6 @@
 #pragma once
 /*
-* THIS IS DESIGNED FOR Visual Studio 2022 (v143) with the Windows SDK 10.0! If that isn't your platform, please check if there are any others!
+* THIS IS DESIGNED FOR CLION with the Linux! If that isn't your platform, please check if there are any others!
 
 * Title: DS++ Information
 * Author: Munashe Dirwayi [wanomaniac]
@@ -15,4 +15,4 @@
           ** BUGS WILL BE REPORTED HERE **
 */
 
-#define DSPPVERSION "2"
+#define DSPPVERSION "1.1.0"

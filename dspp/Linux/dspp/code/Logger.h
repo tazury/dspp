@@ -1,13 +1,14 @@
 #pragma once
 /*
-* THIS IS DESIGNED FOR CLION with the Linux! If that isn't your platform, please check if there are any others!
-
+* THIS IS DESIGNED FOR CLION with Ubuntu 24.04.2! If that isn't your platform, please check if there are any others!
+* It is recommanded to build from source if you have an older version but note the gcc version.
+ *
 * Title: DS++ Logger
 * Author: Munashe Dirwayi [wanomaniac]
 * Purpose: "Just an logger for you to add an listener to. If you want, you can use this as your logger. After all, you send the logs
             The information is given to you or sent by you."
 
-* Compatibility: Designed in C++ 20 | C Standard 17
+* Compatibility: Designed in C++ 20 | C Standard 17 [gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0]
 
 * Updates -
           ** UPDATES WILL BE HERE **

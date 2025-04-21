@@ -4,9 +4,6 @@ set(CMAKE_CXX_STANDARD 20)
 project(dspp_gui)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-
-#    set(Vulkan_INCLUDE_DIR "${VULKAN_SDK}/include" CACHE PATH "Vulkan include dir")
-#    set(Vulkan_LIBRARY "${VULKAN_SDK}/lib/libvulkan.so" CACHE FILEPATH "Vulkan library")
     set(DSPP_INCLUDE "../../dspp/build/dspp")
     set(DSPP_LIBRARY_LIB "../../../dspp/build/dspp" )
     set(CMAKE_BUILD_TYPE Debug)

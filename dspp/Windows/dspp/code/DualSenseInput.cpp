@@ -1,3 +1,5 @@
+// This is not an common file [Win32]
+
 #include "DualSenseInput.h"
 #include "DualSense.h"
 #include "Logger.h"

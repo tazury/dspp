@@ -2,12 +2,12 @@
 #include "Logger.h"
 #include <hidapi/include/hidapi.h>
 #include <iostream>
-
+#include "utils.h"
 
 #define VENDOR_SONY    0x054C
 #define PRODUCT_DUALSENSE 0x0CE6
 
-#include "utils.h"
+
 
 DualSenseMgr::~DualSenseMgr()
 {
