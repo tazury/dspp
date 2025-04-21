@@ -24,7 +24,7 @@ jobs:
         working-directory: dspp/OSX/dspp
 
       - name: Run CMake (Xcode Generator)
-        run: cmake -S . -B build -G Xcode
+        run: cmake -S . -B build -G Xcode  -DCMAKE_OSX_ARCHITECTURES=x86_64
         working-directory: dspp/OSX/dspp
 
       - name: Build Project
