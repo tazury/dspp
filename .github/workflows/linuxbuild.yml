@@ -44,6 +44,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v3
 
+      - name: Install libudev (HIDAPI Dependency)
+        run: sudo apt-get update && sudo apt-get install -y libudev-dev
+
       - name: Download artifact from DSPP
         uses: actions/download-artifact@v4
         with:
@@ -79,6 +82,9 @@ jobs:
         with:
           name: dspp
           path: dspp/Linux/dspp/build
+
+      - name: Install libudev (HIDAPI Dependency)
+        run: sudo apt-get update && sudo apt-get install -y libudev-dev
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
