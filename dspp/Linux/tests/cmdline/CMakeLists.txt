@@ -10,7 +10,7 @@ set(CMAKE_BUILD_TYPE Debug)
 add_executable(dspp_test_cmdline code/main.cpp)
 
 target_link_libraries(dspp_test_cmdline PRIVATE
-        -Wl,--whole-archive ${DSPP_LIBRARY_LIB}/libs/libdspp.a
+        -Wl,--whole-archive ${CMAKE_SOURCE_DIR}/../../dspp/build/dspp/libs/libdspp.a
         -Wl,--whole-archive ${CMAKE_SOURCE_DIR}/../../dspp/3rdparty/hidapi/x64/debug/hidapi.a  -Wl,--no-whole-archive
         udev
 )
