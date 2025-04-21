@@ -30,12 +30,25 @@ jobs:
       - name: Build Project
         run: cmake --build build --config Release
         working-directory: dspp/OSX/dspp
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dspp-artifact
+          path: dspp-artifact/build
   build-cmdline:
     runs-on: macos-latest
     name: Builds DSPP Commandline test
+    needs: build-dspp
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v3
+        with:
+          name: dspp-artifact
+          path: dspp-artifact/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -56,9 +69,16 @@ jobs:
   build-gui:
     runs-on: macos-latest
     name: Builds DSPP GUI test
+    needs: build-dspp
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v3
+        with:
+          name: dspp-artifact
+          path: dspp-artifact/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
