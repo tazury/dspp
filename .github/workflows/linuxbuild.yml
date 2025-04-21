@@ -86,6 +86,19 @@ jobs:
       - name: Install libudev (HIDAPI Dependency)
         run: sudo apt-get update && sudo apt-get install -y libudev-dev
 
+      - name: Install SDL3 from source
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y cmake ninja-build build-essential libasound2-dev libpulse-dev libudev-dev libdbus-1-dev libgl1-mesa-dev libx11-dev libxcursor-dev libxrandr-dev libxss-dev libxi-dev libwayland-dev wayland-protocols libdrm-dev libgbm-dev
+
+            git clone https://github.com/libsdl-org/SDL.git SDL3
+            cd SDL3  
+            mkdir build
+            cd build
+            cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DSDL_TEST=OFF
+            ninja
+            sudo ninja install
+
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
