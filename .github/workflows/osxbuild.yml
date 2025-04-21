@@ -34,8 +34,8 @@ jobs:
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
-          name: dspp-artifact
-          path: dspp-artifact/build
+          name: dspp
+          path: build/
   build-cmdline:
     runs-on: macos-latest
     name: Builds DSPP Commandline test
@@ -47,8 +47,8 @@ jobs:
       - name: Download artifact from DSPP
         uses: actions/download-artifact@v3
         with:
-          name: dspp-artifact
-          path: dspp-artifact/build
+          name: dspp
+          path: dspp/OSX/dspp/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -77,8 +77,8 @@ jobs:
       - name: Download artifact from DSPP
         uses: actions/download-artifact@v3
         with:
-          name: dspp-artifact
-          path: dspp-artifact/build
+          name: dspp
+          path: dspp/OSX/dspp/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
