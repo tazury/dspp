@@ -20,6 +20,7 @@ namespace DualSense {
     };
     class Output {
     public:
+        uint8_t validityFlag = 0xff - 8;
         bool bluetoothF = false;
         CtrlInfo& controller;
         int outputSeq_ = 1;

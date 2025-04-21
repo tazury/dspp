@@ -3,6 +3,7 @@
 #include "../window.h"
 #include <include/DualSenseMgr.h>
 #include <include/Logger.h>
+#include <imgui/imgui_internal.h>
 
 class WindowElement : public UIElement {
 public:
@@ -143,19 +144,32 @@ public:
             }
             ImGui::End();
 
+            // Start with default percentages if not resized yet
+            static float controllerWidth = screen_size.x * 0.4f;
+
+            // Optional: Clamp it so it never becomes too small or large
+            float minWidth = screen_size.x * 0.2f;
+            float maxWidth = screen_size.x * 0.6f;
+            controllerWidth = ImClamp(controllerWidth, minWidth, maxWidth);
+
+            // Calculate the other two widths
+            float sideWidth = (screen_size.x - controllerWidth) * 0.5f;
+
             style.WindowPadding = ImVec2(9.0f, 4.0f);
             // Output Section - left side of the screen
-            ImVec2 output_size = ImVec2(screen_size.x * 0.3f, screen_size.y - player_list_size.y); // 30% width and remaining height after player list
-            ImVec2 output_pos = ImVec2(0, player_list_size.y); // Start below the player list
+            ImVec2 output_size = ImVec2(sideWidth, screen_size.y - player_list_size.y);
+            ImVec2 output_pos = ImVec2(0, player_list_size.y);
             ImGui::SetNextWindowPos(output_pos);
             ImGui::SetNextWindowSize(output_size);
-            ImGui::Begin("Output Section", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
-            ImGui::Text("Output Section - This is how you control the output of your controller");
+            ImGui::Begin("Output Section", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+            ImGui::TextWrapped("Output Section - This is how you control the output of your controller");
             auto& output = controllers[playerIDC-1]->output;
 
             uint8_t min = 0x00;
             uint8_t max = 0xff;
             uint8_t max2 = 0x02;
+
+            ImGui::SliderScalar("Validity Flags", ImGuiDataType_U8, &output.validityFlag, &min, &max);
 
             // LED Settings Section
             if (ImGui::CollapsingHeader("LED Settings")) {
@@ -216,8 +230,8 @@ public:
             ImGui::End();
 
             // Input Section - right side of the screen
-            ImVec2 input_size = ImVec2(screen_size.x * 0.3f, screen_size.y - player_list_size.y); // 30% width and remaining height after player list
-            ImVec2 input_pos = ImVec2(screen_size.x - input_size.x, player_list_size.y); // Start below the player list, aligned to the right
+            ImVec2 input_size = ImVec2(sideWidth, screen_size.y - player_list_size.y);
+            ImVec2 input_pos = ImVec2(screen_size.x - sideWidth, player_list_size.y);
             ImGui::SetNextWindowPos(input_pos);
             ImGui::SetNextWindowSize(input_size);
             ImGui::Begin("Input Section", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
@@ -227,55 +241,60 @@ public:
 
             auto& state = controllerStates[playerIDC];
             
-            ImGui::Text("Player %d", playerIDC);
+            ImGui::TextWrapped("Player %d", playerIDC);
 
             // Button States
-            ImGui::Text("Buttons:");
+            ImGui::TextWrapped("Buttons:");
             for (int i = 0; i < static_cast<int>(DualSense::Input::Button::_Count); i++) {
                 if (state.buttons[i]) {
-                    ImGui::Text("%d: Pressed", i);
+                    ImGui::TextWrapped("%d: Pressed", i);
                 }
             }
 
             // Axis (Stick) Data
             RenderAnalogSticks(state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickY)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
         //    RenderAnalogStick("Right Stick", state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
-            ImGui::Text("Left Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickY)]);
-            ImGui::Text("Right Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
+            ImGui::TextWrapped("Left Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::LeftStickY)]);
+            ImGui::TextWrapped("Right Stick: X=%.2f Y=%.2f", state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickX)], state.axes[static_cast<size_t>(DualSense::Input::Axis::RightStickY)]);
 
             // Triggers
-            ImGui::Text("L2: %.2f (Effect: %d)", state.axes[4], state.triggers[0].inEffect);
-            ImGui::Text("R2: %.2f (Effect: %d)", state.axes[5], state.triggers[1].inEffect);
+            ImGui::TextWrapped("L2: %.2f (Effect: %d)", state.axes[4], state.triggers[0].inEffect);
+            ImGui::TextWrapped("R2: %.2f (Effect: %d)", state.axes[5], state.triggers[1].inEffect);
 
             // Touchpad
             if (state.touchPoints[0].active)
-                ImGui::Text("Touch 1: ID=%d X=%ld Y=%ld", state.touchPoints[0].id, state.touchPoints[0].x, state.touchPoints[0].y);
+                ImGui::TextWrapped("Touch 1: ID=%d X=%ld Y=%ld", state.touchPoints[0].id, state.touchPoints[0].x, state.touchPoints[0].y);
             if (state.touchPoints[1].active)
-                ImGui::Text("Touch 2: ID=%d X=%ld Y=%ld", state.touchPoints[1].id, state.touchPoints[1].x, state.touchPoints[1].y);
+                ImGui::TextWrapped("Touch 2: ID=%d X=%ld Y=%ld", state.touchPoints[1].id, state.touchPoints[1].x, state.touchPoints[1].y);
 
             // Motion Sensors
-            ImGui::Text("Accelerometer: X=%.2f Y=%.2f Z=%.2f", state.motion.accelerometer[0], state.motion.accelerometer[1], state.motion.accelerometer[2]);
-            ImGui::Text("Gyroscope: X=%.2f Y=%.2f Z=%.2f", state.motion.gyroscope[0], state.motion.gyroscope[1], state.motion.gyroscope[2]);
+            ImGui::TextWrapped("Accelerometer: X=%.2f Y=%.2f Z=%.2f", state.motion.accelerometer[0], state.motion.accelerometer[1], state.motion.accelerometer[2]);
+            ImGui::TextWrapped("Gyroscope: X=%.2f Y=%.2f Z=%.2f", state.motion.gyroscope[0], state.motion.gyroscope[1], state.motion.gyroscope[2]);
 
             if (state.buttons[static_cast<size_t>(DualSense::Input::Button::Mute)]) {
                 state.microphoneMuted = !state.microphoneMuted;
             }
 
             // Microphone
-            ImGui::Text("Microphone Muted: %s", state.microphoneMuted ? "Yes" : "No");
+            ImGui::TextWrapped("Microphone Muted: %s", state.microphoneMuted ? "Yes" : "No");
 
-            ImGui::Text("Input Section");
+            ImGui::TextWrapped("Input Section");
             ImGui::End();
 
             // Controller Section - center of the screen
-            ImVec2 controller_size = ImVec2(screen_size.x * 0.4f, screen_size.y - player_list_size.y); // 40% width, full height minus player list height
-            ImVec2 controller_pos = ImVec2((screen_size.x - controller_size.x) * 0.5f, player_list_size.y); // Center horizontally, start below the player list
+            ImVec2 controller_size = ImVec2(controllerWidth, screen_size.y - player_list_size.y);
+            ImVec2 controller_pos = ImVec2(sideWidth, player_list_size.y);
             ImGui::SetNextWindowPos(controller_pos);
-            ImGui::SetNextWindowSize(controller_size);
-            ImGui::Begin("Controller Section", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
+            ImGui::SetNextWindowSize(controller_size, ImGuiCond_Always);
+            ImGui::Begin("Controller Section", NULL,  ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar);
             ImGui::Text("Controller Section (Live Controller will appear here)");
             ImDrawList* drawList = ImGui::GetWindowDrawList();
             ImVec2 controllerPos = ImGui::GetCursorScreenPos();
+
+            ImVec2 newSize = ImGui::GetWindowSize();
+            if (newSize.x != controllerWidth) {
+                controllerWidth = newSize.x;
+            }
 
             drawList->AddRectFilled(controllerPos, ImVec2(controllerPos.x + 300, controllerPos.y + 180), IM_COL32(50, 50, 50, 255));
 

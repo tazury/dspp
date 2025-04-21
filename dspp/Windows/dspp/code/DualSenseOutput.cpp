@@ -54,7 +54,7 @@ int DualSense::Output::sendOutputUSB()
     outputReport[0] = 0x02;  // Report ID for USB
 
     // Control flags (from C# example)
-    outputReport[1] = 0xff; // 0x04 | 0x08;  // 0x4 | 0x8
+    outputReport[1] = validityFlag; // 0x04 | 0x08;  // 0x4 | 0x8
     outputReport[2] = 0xff - 8;
 
     outputReport[3] = rightMoter;  // Right motor (high frequency)
@@ -127,7 +127,7 @@ int DualSense::Output::sendOutputBT()
 
     // Control flags (from C# example)
 
-    outputReport[0] = 0xff; // 0x04 | 0x08;  // 0x4 | 0x8
+    outputReport[0] = validityFlag; // 0x04 | 0x08;  // 0x4 | 0x8
 
     // On windows, bluetooth is a bit strange. I'll have to send an outputReport with id 0xff-7 than 0xff-9
     outputReport[1] = !bluetoothF ? 0xff - 1 : 0xff - 8;//0x01 | 0x04 | 0x10 | 0x40;
