@@ -1,0 +1,79 @@
+name: Build All (OSX)
+
+on:
+  push:
+    branches: [ latest ]
+  pull_request:
+    branches: [ latest ]
+
+jobs:
+  build-dspp:
+    runs-on: macos-latest
+    name: Builds DSPP library
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/dspp
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode
+        working-directory: dspp/OSX/dspp
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/dspp
+  build-cmdline:
+    runs-on: macos-latest
+    name: Builds DSPP Commandline test
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/tests/cmdline
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode
+        working-directory: dspp/OSX/tests/cmdline
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/tests/cmdline
+  build-gui:
+    runs-on: macos-latest
+    name: Builds DSPP GUI test
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/tests/gui
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode
+        working-directory: dspp/OSX/tests/gui
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/tests/gui
+
