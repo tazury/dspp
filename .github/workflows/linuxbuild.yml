@@ -103,7 +103,7 @@ jobs:
         run: |
              wget https://sdk.lunarg.com/sdk/download/1.4.309.0/linux/vulkansdk-linux-x86_64-1.4.309.0.tar.xz
              tar -xvf vulkansdk-linux-x86_64-1.4.309.0.tar.xz -C /opt
-             echo "source /opt/1.4.309.0/setup-env.sh" >> ~/.bashrc
+             echo "source /opt/1.4.309.0/setup-env.sh" >> $GITHUB_ENV
              source ~/.bashrc
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
