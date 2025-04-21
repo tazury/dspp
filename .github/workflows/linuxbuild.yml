@@ -99,6 +99,15 @@ jobs:
             ninja
             sudo ninja install
 
+      - name: Install Vulkan SDK (1.4.309.0)
+        run: |
+             wget https://sdk.lunarg.com/sdk/download/1.4.309.0/linux/vulkansdk-linux-x86_64-1.4.309.0.tar.xz
+             tar -xvf vulkansdk-linux-x86_64-1.4.309.0.tar.xz -C /opt
+             echo "export VULKAN_SDK=/opt/vulkan-sdk/1.4.309.0/x86_64" >> $GITHUB_ENV
+             echo "export PATH=\$VULKAN_SDK/bin:\$PATH" >> $GITHUB_ENV
+             echo "export LD_LIBRARY_PATH=\$VULKAN_SDK/lib:\$LD_LIBRARY_PATH" >> $GITHUB_ENV
+             echo "export VK_ICD_FILENAMES=\$VULKAN_SDK/etc/vulkan/icd.d/nvidia_icd.json" >> $GITHUB_ENV
+             echo "export VK_LAYER_PATH=\$VULKAN_SDK/etc/vulkan/explicit_layer.d" >> $GITHUB_ENV
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
