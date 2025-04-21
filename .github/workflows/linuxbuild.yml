@@ -21,21 +21,21 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/linux/dspp
+        working-directory: dspp/Linux/dspp
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/linux/dspp
+        working-directory: dspp/Linux/dspp
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/linux/dspp
+        working-directory: dspp/Linux/dspp
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: dspp
-          path: dspp/OSX/dspp/build
+          path: dspp/Linux/dspp/build
   build-cmdline:
     runs-on: ubuntu-latest
     name: Builds DSPP Commandline test
@@ -48,7 +48,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dspp
-          path: dspp/OSX/dspp/build
+          path: dspp/Linux/dspp/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -57,15 +57,15 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/linux/tests/cmdline
+        working-directory: dspp/Linux/tests/cmdline
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/linux/tests/cmdline
+        working-directory: dspp/Linux/tests/cmdline
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/linux/tests/cmdline
+        working-directory: dspp/Linux/tests/cmdline
   build-gui:
     runs-on: ubuntu-latest
     name: Builds DSPP GUI test
@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dspp
-          path: dspp/linux/dspp/build
+          path: dspp/Linux/dspp/build
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
@@ -87,12 +87,12 @@ jobs:
 
       - name: Create Build Directory
         run: cmake -E make_directory build
-        working-directory: dspp/linux/tests/gui
+        working-directory: dspp/Linux/tests/gui
 
       - name: Run CMake (Xcode Generator)
         run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
-        working-directory: dspp/linux/tests/gui
+        working-directory: dspp/Linux/tests/gui
 
       - name: Build Project
         run: cmake --build build --config Release
-        working-directory: dspp/linux/tests/gui
+        working-directory: dspp/Linux/tests/gui
