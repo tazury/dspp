@@ -126,7 +126,7 @@ jobs:
         run: cmake --build build --config Release
         working-directory: dspp/Linux/tests/gui
   upload-all:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs: [build-dspp, build-cmdline, build-gui]
     name: Upload Build Artifacts
     steps:
@@ -134,7 +134,7 @@ jobs:
           uses: actions/download-artifact@v4
           with:
               name: dspp
-              path: dspp/OSX/dspp/build
+              path: dspp/Linux/dspp/build
       
         - uses: geekyeggo/delete-artifact@v5
           with:
@@ -143,8 +143,8 @@ jobs:
         - name: Upload Artifact
           uses: actions/upload-artifact@v4
           with: 
-              name: dspp-osx-build
+              name: dspp-linux-build
               path: |
-                    dspp/OSX/dspp/build
-                    dspp/OSX/tests/gui/build
-                    dspp/OSX/tests/cmdline/build
+                    dspp/Linux/dspp/build
+                    dspp/Linux/tests/gui/build
+                    dspp/Linux/tests/cmdline/build
