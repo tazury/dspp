@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dspp-cmdline
-          path: dspp/OSX/dspp/tests/cmdline/build
+          path: dspp/OSX/tests/cmdline/build
   build-gui:
     runs-on: macos-latest
     name: Builds DSPP GUI test
@@ -107,7 +107,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dspp-gui
-          path: dspp/OSX/dspp/tests/cmdline/build
+          path: dspp/OSX/tests/cmdline/build
 
   upload-all:
     runs-on: macos-latest
@@ -124,13 +124,13 @@ jobs:
           uses: actions/download-artifact@v4
           with:
               name: dspp-cmdline
-              path: dspp/OSX/dspp/tests/cmdline/build              
+              path: dspp/OSX/tests/cmdline/build              
       
         - name: Download artifact from DSPP GUI
           uses: actions/download-artifact@v4
           with:
               name: dspp-gui
-              path: dspp/OSX/dspp/tests/gui/build              
+              path: dspp/OSX/tests/gui/build              
       
         - uses: geekyeggo/delete-artifact@v5
           with:
