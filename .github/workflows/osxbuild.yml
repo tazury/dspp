@@ -66,6 +66,12 @@ jobs:
       - name: Build Project
         run: cmake --build build --config Release
         working-directory: dspp/OSX/tests/cmdline
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-cmdline
+          path: dspp/OSX/dspp/tests/cmdline/build
   build-gui:
     runs-on: macos-latest
     name: Builds DSPP GUI test
@@ -96,6 +102,13 @@ jobs:
       - name: Build Project
         run: cmake --build build --config Release
         working-directory: dspp/OSX/tests/gui
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-gui
+          path: dspp/OSX/dspp/tests/cmdline/build
+
   upload-all:
     runs-on: macos-latest
     needs: [build-dspp, build-cmdline, build-gui]
@@ -106,10 +119,25 @@ jobs:
           with:
               name: dspp
               path: dspp/OSX/dspp/build
+
+        - name: Download artifact from DSPP CMDLINE
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-cmdline
+              path: dspp/OSX/dspp/tests/cmdline/build              
+      
+        - name: Download artifact from DSPP GUI
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-gui
+              path: dspp/OSX/dspp/tests/gui/build              
       
         - uses: geekyeggo/delete-artifact@v5
           with:
-                name: dspp
+                name: |
+                      dspp
+                      dspp-cmdline
+                      dspp-gui
 
         - name: Upload Artifact
           uses: actions/upload-artifact@v4
