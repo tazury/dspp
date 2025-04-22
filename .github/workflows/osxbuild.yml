@@ -96,4 +96,15 @@ jobs:
       - name: Build Project
         run: cmake --build build --config Release
         working-directory: dspp/OSX/tests/gui
-
+upload-all:
+    runs-on: macos-latest
+    name: Builds DSPP GUI test
+    needs: [build-dspp, build-cmdline, build-gui]
+    name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-osx-build
+          path: |
+            dspp/OSX/dspp/build
+            dspp/OSX/tests/gui/build
+            dspp/OSX/tests/cmdline/build
