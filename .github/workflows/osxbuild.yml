@@ -101,11 +101,21 @@ jobs:
     needs: [build-dspp, build-cmdline, build-gui]
     name: Upload Build Artifacts
     steps:
-         - name: Upload Artifact
-           uses: actions/upload-artifact@v4
-           with: 
-            name: dspp-osx-build
-            path: |
+        - name: Download artifact from DSPP
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp
+              path: dspp/OSX/dspp/build
+      
+        - uses: geekyeggo/delete-artifact@v5
+          with:
+                name: dspp
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v4
+          with: 
+          name: dspp-osx-build
+          path: |
                 dspp/OSX/dspp/build
                 dspp/OSX/tests/gui/build
                 dspp/OSX/tests/cmdline/build
