@@ -1,8 +1,8 @@
 #pragma once
 #include "../UIElement.h"
 #include "../window.h"
-#include <include/DualSenseMgr.h>
-#include <include/Logger.h>
+#include <DualSenseMgr.h>
+#include <Logger.h>
 #include <imgui/imgui_internal.h>
 
 class WindowElement : public UIElement {

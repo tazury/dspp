@@ -6,11 +6,13 @@ set SOURCE_DIR=%1
 set BUILD_DIR=%2
 set TPTY_DIR=%3
 
+
 if not exist "%BUILD_DIR%\dspp" mkdir "%BUILD_DIR%\dspp"
 
 :: Create the target directories if they don't exist
-if not exist "%BUILD_DIR%\dspp\include" mkdir "\%BUILD_DIR%\dspp\include"
-if not exist "%BUILD_DIR%\dspp\libs" mkdir "%BUILD_DIR%\dspp\libs"
+
+if not exist "%BUILD_DIR%\dspp\include" mkdir "%BUILD_DIR%\dspp\include"
+if not exist "%BUILD_DIR%\libs" mkdir "%BUILD_DIR%\dspp\libs"
 
 :: Copy .h files to the include folder
 set "SOURCE_DIRS_SPACED=%SOURCE_DIR:,= %"

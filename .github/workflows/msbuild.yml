@@ -1,4 +1,4 @@
-name: Testing MSBuild
+name: Build All (Windows)
 
 on:
   push:
@@ -16,18 +16,29 @@ permissions:
 jobs:
   build:
     runs-on: windows-latest
+    name: Build DSPP and Tests
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: 'list vc tools'
-      run: |
-        get-childitem -Path 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC'
-        get-content 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\Microsoft.VCToolsVersion.v143.default.props'
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Set up MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
+      - name: Build Entire Solution
+        run: |
+          msbuild "${{env.SOLUTION_FILE_PATH}}" ^
+            /p:Configuration=${{env.BUILD_CONFIGURATION}} ^
+            /p:PlatformToolset=v143 ^
+            /p:LanguageStandard=stdcpp20 ^
+            /p:VCToolsVersion=14.43.34808 ^
+            /m
 
-    - name: Build Solution
-      run: msbuild "${{env.SOLUTION_FILE_PATH}}" /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformToolset=v143 /p:LanguageStandard=stdcpp20 /p:VCToolsVersion=14.43.34808 /m
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-build
+          path: |
+            dspp/Windows/**/x64/Release/*.exe
+            dspp/Windows/**/x64/Release/*.dll
+            dspp/Windows/**/x64/Release/*.lib
