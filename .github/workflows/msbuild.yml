@@ -27,13 +27,7 @@ jobs:
 
       - name: Build Entire Solution
         run: |
-          msbuild "${{env.SOLUTION_FILE_PATH}}" ^
-            /p:Configuration=${{env.BUILD_CONFIGURATION}} ^
-            /p:PlatformToolset=v143 ^
-            /p:LanguageStandard=stdcpp20 ^
-            /p:VCToolsVersion=14.43.34808 ^
-            /m
-
+             msbuild "${{env.SOLUTION_FILE_PATH}}" /p:Configuration=${{env.BUILD_CONFIGURATION}} /p:PlatformToolset=v143 /p:LanguageStandard=stdcpp20 /p:VCToolsVersion=14.43.34808 /m
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
