@@ -114,8 +114,8 @@ jobs:
         - name: Upload Artifact
           uses: actions/upload-artifact@v4
           with: 
-          name: dspp-osx-build
-          path: |
-                dspp/OSX/dspp/build
-                dspp/OSX/tests/gui/build
-                dspp/OSX/tests/cmdline/build
+              name: dspp-osx-build
+              path: |
+                    dspp/OSX/dspp/build
+                    dspp/OSX/tests/gui/build
+                    dspp/OSX/tests/cmdline/build  
