@@ -1,17 +1,14 @@
+/*
+ * The header is common but the .cpp file is platform specific.
+ */
+
 #include "DualSenseInput.h"
 #include "DualSense.h"
 #include "Logger.h"
-#include <windows.h>
+#include <pthread.h>
+#include <string>
+#include "utils.h"
 
-
-// Helper functions will not be apart of the DualSense namespace - Make a util.h?
-double getCurrentTimestamp()
-{
-    using namespace std::chrono;
-    return duration_cast<duration<double>>(
-        steady_clock::now().time_since_epoch()
-    ).count();
-}
 namespace DualSense {
 
     Input::~Input() {
@@ -50,7 +47,7 @@ namespace DualSense {
                         // waiting
                     }
                     if (!controller.is_connected) return;
-                    int bytesRead;
+                    int bytesRead = 0;
                     try {
                         bytesRead = hid_read(controller.hid_dev, buffer.data(), reportSize);
                     }
@@ -69,8 +66,8 @@ namespace DualSense {
         else {
 
             workerThread = std::thread([this]() {
-                std::wstring title = L"DSPP Input Worker Player " + std::to_wstring(controller.number);
-                SetThreadDescription(GetCurrentThread(), title.c_str());
+                std::string title = "DSPP Input Worker Player " + std::to_string(controller.number);
+                SetCurrentThreadName(title);
                 DS_LOG_NORMAL("Input Thread has stared for PID" + std::to_string(controller.number));
                 const int reportSize = 77;
                 std::vector<uint8_t> buffer(reportSize);
@@ -83,7 +80,7 @@ namespace DualSense {
                         // waiting
                     }
                     if (!controller.is_connected) return;
-                    int bytesRead;
+                    int bytesRead = 0;
                     try {
                          bytesRead = hid_read(controller.hid_dev, buffer.data(), reportSize);
                     }
@@ -243,7 +240,10 @@ namespace DualSense {
 
             state.buttons[static_cast<size_t>(Button::PS)] = (report[11] & 0x01) != 0;
             state.buttons[static_cast<size_t>(Button::Touchpad)] = (report[11] & 0x02) != 0;
+
             state.buttons[static_cast<size_t>(Button::Mute)] = (report[11] & 0x04) != 0;
+
+
         }
     }
 
@@ -252,9 +252,14 @@ namespace DualSense {
         // Analog stick parsing
         if (connectionType && reportID == 0x01) {
             state.axes[static_cast<size_t>(Axis::LeftStickX)] =
-                (report[1] - 127.0f) / 127.0f;
+                (report[0] - 127.0f) / 127.0f;
             state.axes[static_cast<size_t>(Axis::LeftStickY)] =
+                (report[1] - 127.0f) / 127.0f;
+
+            state.axes[static_cast<size_t>(Axis::RightStickX)] =
                 (report[2] - 127.0f) / 127.0f;
+            state.axes[static_cast<size_t>(Axis::RightStickY)] =
+                (report[3] - 127.0f) / 127.0f;
 
             // Trigger parsing
             state.axes[static_cast<size_t>(Axis::L2Trigger)] =
@@ -273,9 +278,14 @@ namespace DualSense {
         }
         else if (!connectionType && reportID == 0x01) {
             state.axes[static_cast<size_t>(Axis::LeftStickX)] =
-                (report[1] - 127.0f) / 127.0f;
+                (report[0] - 127.0f) / 127.0f;
             state.axes[static_cast<size_t>(Axis::LeftStickY)] =
+                (report[1] - 127.0f) / 127.0f;
+
+            state.axes[static_cast<size_t>(Axis::RightStickX)] =
                 (report[2] - 127.0f) / 127.0f;
+            state.axes[static_cast<size_t>(Axis::RightStickY)] =
+                (report[3] - 127.0f) / 127.0f;
 
             // Trigger parsing
             state.axes[static_cast<size_t>(Axis::L2Trigger)] =
@@ -289,6 +299,11 @@ namespace DualSense {
             state.axes[static_cast<size_t>(Axis::LeftStickY)] =
                 static_cast<float>((static_cast<double>(2) * report[3] / 0xFF) - 1.0);
 
+            state.axes[static_cast<size_t>(Axis::RightStickX)] =
+                static_cast<float>((static_cast<double>(2) * report[4] / 0xFF) - 1.0);
+            state.axes[static_cast<size_t>(Axis::RightStickY)] =
+                static_cast<float>((static_cast<double>(2) * report[5] / 0xFF) - 1.0);
+            
             // Trigger parsing
             state.axes[static_cast<size_t>(Axis::L2Trigger)] =
                 report[6] / 255.0f;
@@ -356,9 +371,9 @@ namespace DualSense {
 
             // Second touch point
             state.touchPoints[1].active = !(touch10 & 0x80);
-            state.touchPoints[1].x = (touch10 & 0x7F);
-            state.touchPoints[1].y = ((touch12 & 0x0F) << 8) | touch11;
-            state.touchPoints[1].id = (touch13 << 4) | ((touch12 & 0xF0) >> 4);
+            state.touchPoints[1].x = ((touch12 & 0x0F) << 8) | touch11;
+            state.touchPoints[1].y = (touch13 << 4) | ((touch12 & 0xF0) >> 4);
+            state.touchPoints[1].id = (touch10 & 0x7F);
         }
     }
 

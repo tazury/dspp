@@ -1,3 +1,5 @@
+// This is not an common file [Win32]
+
 #include "DualSenseInput.h"
 #include "DualSense.h"
 #include "Logger.h"
@@ -255,14 +257,14 @@ namespace DualSense {
         // Analog stick parsing
         if (connectionType && reportID == 0x01) {
             state.axes[static_cast<size_t>(Axis::LeftStickX)] =
-                (report[0] - 127.0f) / 127.0f;
+                static_cast<float>((static_cast<double>(2) * report[1] / 0xFF) - 1.0);
             state.axes[static_cast<size_t>(Axis::LeftStickY)] =
-                (report[1] - 127.0f) / 127.0f;
+                static_cast<float>((static_cast<double>(2) * report[2] / 0xFF) - 1.0);
 
             state.axes[static_cast<size_t>(Axis::RightStickX)] =
-                (report[2] - 127.0f) / 127.0f;
+                static_cast<float>((static_cast<double>(2) * report[3] / 0xFF) - 1.0);
             state.axes[static_cast<size_t>(Axis::RightStickY)] =
-                (report[3] - 127.0f) / 127.0f;
+                static_cast<float>((static_cast<double>(2) * report[4] / 0xFF) - 1.0);
 
             // Trigger parsing
             state.axes[static_cast<size_t>(Axis::L2Trigger)] =
@@ -346,9 +348,9 @@ namespace DualSense {
 
             // Second touch point
             state.touchPoints[1].active = !(touch10 & 0x80);
-            state.touchPoints[1].x = (touch10 & 0x7F);
-            state.touchPoints[1].y = ((touch12 & 0x0F) << 8) | touch11;
-            state.touchPoints[1].id = (touch13 << 4) | ((touch12 & 0xF0) >> 4);
+            state.touchPoints[1].x = ((touch12 & 0x0F) << 8) | touch11;
+            state.touchPoints[1].y = (touch13 << 4) | ((touch12 & 0xF0) >> 4);
+            state.touchPoints[1].id = (touch10 & 0x7F);
         }
         else if (reportID == 0x01 && !connectionType) { // NOT SUPPROTED ON BT Report 01 - Use 31
             return;

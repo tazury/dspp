@@ -1,6 +1,4 @@
 # DualSense++
-*You are using the DSPP-Only Branch, this means you will only get the DSPP source code and won't recieve any of the tests. If you're planning on modifying any of the tests, please use the latest branch or the tests specific branch.*
-
 ## An C++ Library designed for the usage of multiple DualSense controller support within gameplay.
 - DS++ is an Team Azury project towards the game development community into unifiying DualSense controller support for video games outside of the PS5 SDK.
 - Most game developers would not add their dualsense features to PC releases due to the lack of support or documentation that can make it worth. *DualSense++ can solve that!*

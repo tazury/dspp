@@ -1,3 +1,5 @@
+// This is not an common file [Win32]
+
 #include "DualSenseMgr.h"
 #include "Logger.h"
 #include <hidapi/include/hidapi.h>

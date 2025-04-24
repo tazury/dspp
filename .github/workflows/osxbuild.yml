@@ -1,0 +1,149 @@
+name: Build All (OSX)
+
+on:
+  push:
+    branches: [ latest ]
+  pull_request:
+    branches: [ latest ]
+
+jobs:
+  build-dspp:
+    runs-on: macos-latest
+    name: Builds DSPP library
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/dspp
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode  -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/OSX/dspp
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/dspp
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp
+          path: dspp/OSX/dspp/build
+  build-cmdline:
+    runs-on: macos-latest
+    name: Builds DSPP Commandline test
+    needs: build-dspp
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v4
+        with:
+          name: dspp
+          path: dspp/OSX/dspp/build
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/tests/cmdline
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/OSX/tests/cmdline
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/tests/cmdline
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-cmdline
+          path: dspp/OSX/tests/cmdline/build
+  build-gui:
+    runs-on: macos-latest
+    name: Builds DSPP GUI test
+    needs: build-dspp
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v4
+        with:
+          name: dspp
+          path: dspp/OSX/dspp/build
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/OSX/tests/gui
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Xcode -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/OSX/tests/gui
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/OSX/tests/gui
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-gui
+          path: dspp/OSX/tests/gui/build
+
+  upload-all:
+    runs-on: macos-latest
+    needs: [build-dspp, build-cmdline, build-gui]
+    name: Upload Build Artifacts
+    steps:
+        - name: Download artifact from DSPP
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp
+              path: dspp/OSX/dspp/build
+
+        - name: Download artifact from DSPP CMDLINE
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-cmdline
+              path: dspp/OSX/tests/cmdline/build              
+      
+        - name: Download artifact from DSPP GUI
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-gui
+              path: dspp/OSX/tests/gui/build              
+      
+        - uses: geekyeggo/delete-artifact@v5
+          with:
+                name: |
+                      dspp
+                      dspp-cmdline
+                      dspp-gui
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v4
+          with: 
+              name: dspp-osx-build
+              path: |
+                    dspp/OSX/dspp/build
+                    dspp/OSX/tests/gui/build
+                    dspp/OSX/tests/cmdline/build  

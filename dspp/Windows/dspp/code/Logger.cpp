@@ -1,4 +1,4 @@
-// Logger.cpp
+// This is not an common file [Win32]
 #include "Logger.h"
 #include <mutex>
 

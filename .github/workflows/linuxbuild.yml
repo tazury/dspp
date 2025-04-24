@@ -1,0 +1,178 @@
+name: Build All (Linux)
+
+on:
+  push:
+    branches: [ latest ]
+  pull_request:
+    branches: [ latest ]
+
+jobs:
+  build-dspp:
+    runs-on: ubuntu-latest
+    name: Builds DSPP library
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/Linux/dspp
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/Linux/dspp
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/Linux/dspp
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp
+          path: dspp/Linux/dspp/build
+  build-cmdline:
+    runs-on: ubuntu-latest
+    name: Builds DSPP Commandline test
+    needs: build-dspp
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Install libudev (HIDAPI Dependency)
+        run: sudo apt-get update && sudo apt-get install -y libudev-dev
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v4
+        with:
+          name: dspp
+          path: dspp/Linux/dspp/build
+
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/Linux/tests/cmdline
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/Linux/tests/cmdline
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/Linux/tests/cmdline
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-cmdline
+          path: dspp/Linux/tests/cmdline/build
+  build-gui:
+    runs-on: ubuntu-latest
+    name: Builds DSPP GUI test
+    needs: build-dspp
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+
+      - name: Download artifact from DSPP
+        uses: actions/download-artifact@v4
+        with:
+          name: dspp
+          path: dspp/Linux/dspp/build
+
+      - name: Install libudev (HIDAPI Dependency)
+        run: sudo apt-get update && sudo apt-get install -y libudev-dev
+
+      - name: Install SDL3 from source
+        run: |
+            sudo apt-get update
+            sudo apt-get install -y cmake ninja-build build-essential libasound2-dev libpulse-dev libudev-dev libdbus-1-dev libgl1-mesa-dev libx11-dev libxcursor-dev libxrandr-dev libxss-dev libxi-dev libwayland-dev wayland-protocols libdrm-dev libgbm-dev
+
+            git clone https://github.com/libsdl-org/SDL.git SDL3
+            cd SDL3  
+            mkdir build
+            cd build
+            cmake .. -G Ninja -DCMAKE_BUILD_TYPE=Release -DSDL_TEST=OFF
+            ninja
+            sudo ninja install
+
+      - name: Install Vulkan SDK (1.4.309.0)
+        run: |
+             wget https://sdk.lunarg.com/sdk/download/1.4.309.0/linux/vulkansdk-linux-x86_64-1.4.309.0.tar.xz
+             tar -xvf vulkansdk-linux-x86_64-1.4.309.0.tar.xz -C /opt
+             export VULKAN_SDK=/opt/1.4.309.0/x86_64
+             echo "VULKAN_SDK=$VULKAN_SDK" >> $GITHUB_ENV
+             echo "PATH=$VULKAN_SDK/bin:$PATH" >> $GITHUB_ENV
+             echo "LD_LIBRARY_PATH=$VULKAN_SDK/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+             echo "VK_ICD_FILENAMES=$VULKAN_SDK/etc/vulkan/icd.d/nvidia_icd.json" >> $GITHUB_ENV
+             echo "VK_LAYER_PATH=$VULKAN_SDK/etc/vulkan/explicit_layer.d" >> $GITHUB_ENV
+      - name: Set up CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.27.0'  # or whatever version you want
+
+      - name: Create Build Directory
+        run: cmake -E make_directory build
+        working-directory: dspp/Linux/tests/gui
+
+      - name: Run CMake (Xcode Generator)
+        run: cmake -S . -B build -G Ninja -DCMAKE_OSX_ARCHITECTURES=x86_64
+        working-directory: dspp/Linux/tests/gui
+
+      - name: Build Project
+        run: cmake --build build --config Release
+        working-directory: dspp/Linux/tests/gui
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dspp-gui
+          path: dspp/Linux/tests/gui/build
+
+  upload-all:
+    runs-on: ubuntu-latest
+    needs: [build-dspp, build-cmdline, build-gui]
+    name: Upload Build Artifacts
+    steps:
+        - name: Download artifact from DSPP
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp
+              path: dspp/Linux/dspp/build
+
+        - name: Download artifact from DSPP
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-cmdline
+              path: dspp/Linux/tests/cmdline/build
+
+        - name: Download artifact from DSPP
+          uses: actions/download-artifact@v4
+          with:
+              name: dspp-gui
+              path: dspp/Linux/tests/gui/build
+      
+        - uses: geekyeggo/delete-artifact@v5
+          with:
+                name: |
+                      dspp
+                      dspp-cmdline
+                      dspp-gui
+
+        - name: Upload Artifact
+          uses: actions/upload-artifact@v4
+          with: 
+              name: dspp-linux-build
+              path: |
+                    dspp/Linux/dspp/build
+                    dspp/Linux/tests/gui/build
+                    dspp/Linux/tests/cmdline/build

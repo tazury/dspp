@@ -1,6 +1,23 @@
+/*
+* This is an common file, meaning that this is used in all platforms. So don't stress anything.
+
+* Title: DS++ DualSense Bluetooth Checksum
+* Author: Munashe Dirwayi [wanomaniac]
+* Purpose: "This allows us to send an output to an bluetooth controller, without this. It wouldn't work.
+            There is no need to use this class in your code."
+
+* Compatibility: Designed in C++ 20 | C Standard 17 
+
+* Updates -
+          ** UPDATES WILL BE HERE **
+
+* Known issues -
+          ** BUGS WILL BE REPORTED HERE **
+*/
 #pragma once
 #include <array>
 #include <vector>
+#include <cstdint>
 
 namespace DualSense {
     class DualSenseChecksum {

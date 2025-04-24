@@ -1,11 +1,12 @@
 #include "DualSenseMgr.h"
 #include "Logger.h"
 #include <hidapi/include/hidapi.h>
-#include <windows.h>
-
+#include <iostream>
+#include "utils.h"
 
 #define VENDOR_SONY    0x054C
 #define PRODUCT_DUALSENSE 0x0CE6
+
 
 
 DualSenseMgr::~DualSenseMgr()
@@ -61,8 +62,14 @@ std::map<int, DualSense::DualSense*> DualSenseMgr::getControllers()
 
 DualSense::DualSense* DualSenseMgr::getController(int id)
 {
-    if (controllers.find(id) != controllers.end()) {
-        return controllers.find(id)->second;
+    if(id == 0){
+        DS_LOG_WARNING("Getting controller from ID 0 is inproper, please read the documentation. Changing to 1");
+        id = 1;
+    }
+
+    auto it = controllers.find(id-1);
+    if (it != controllers.end()) {
+        return it->second;
     }
     else return nullptr;
 }
@@ -72,16 +79,10 @@ int DualSenseMgr::getAmoOfPlayers()
     return static_cast<int>(controllers.size());
 }
 
-long long getCurrentTimestamp() {
-    using namespace std::chrono;
-    return std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::system_clock::now().time_since_epoch()).count();
-}
-
 bool DualSenseMgr::discoverHelper(DualSenseMgr::DiscoverSettings settings, bool isThreaded)
 {
-    std::wstring title = L"DSPP Discovery Helper";
-    SetThreadDescription(GetCurrentThread(), title.c_str());
+    std::string title = "DSPP Discovery Helper";
+    SetCurrentThreadName(title);
         long long sTime = getCurrentTimestamp();
         int pDetected = 0;
         while (pDetected < settings.maxPlayers && !justStop || pDetected < settings.minPlayers && !justStop) {
@@ -116,6 +117,7 @@ bool DualSenseMgr::discoverHelper(DualSenseMgr::DiscoverSettings settings, bool 
                     DualSense::DualSense* c = new DualSense::DualSense();
                     c->controller.is_connected = true;
                     c->controller.hid_dev = hid_open_path(cur->path);
+                    std::wcout << hid_error(c->controller.hid_dev) << std::endl;
                     c->controller.is_usb = cur->bus_type != 2;
                     c->controller.number = playerId;
 
@@ -131,8 +133,8 @@ bool DualSenseMgr::discoverHelper(DualSenseMgr::DiscoverSettings settings, bool 
                             }
                             DS_LOG_NORMAL("Controller accepted : Player/ID" + std::to_string(c->controller.number));
                             c->output.ledSettings.playerNumber = c->output.getLEDNumber();
-                            controllers[c->controller.number] = c;
-                            cThreads.push_back(std::thread([&]() { connectionThread(c); }));
+                            controllers[c->controller.number-1] = c;
+                            cThreads.push_back(std::thread([&]() { connectionThread(controllers[c->controller.number-1]); }));
                             if (!isAlrReplaced) pDetected++;
                         }
                         else {
@@ -143,8 +145,8 @@ bool DualSenseMgr::discoverHelper(DualSenseMgr::DiscoverSettings settings, bool 
                       //  if (isAlrReplaced) controllers.erase(c->controller.number); // A controller already.
                         DS_LOG_NORMAL("Controller accepted by default : Player/ID " + std::to_string(c->controller.number));
                         c->output.ledSettings.playerNumber = c->output.getLEDNumber();
-                        controllers[c->controller.number] = c;
-                        cThreads.push_back(std::thread([&]() { connectionThread(c); }));
+                        controllers[c->controller.number-1] = c;
+                        cThreads.push_back(std::thread([&]() { connectionThread(controllers[c->controller.number-1]); }));
                         if (!isAlrReplaced) pDetected++;
                     }
                     seenDevicePaths.insert(devicePath);
@@ -162,8 +164,13 @@ bool DualSenseMgr::discoverHelper(DualSenseMgr::DiscoverSettings settings, bool 
 // If the connection is -1 for 3 times, thats not stable
 void DualSenseMgr::connectionThread(DualSense::DualSense* ds)
 {
-    std::wstring title = L"DSPP Connection Thread Player " + std::to_wstring(ds->controller.number);
-    SetThreadDescription(GetCurrentThread(), title.c_str());
+    std::string title = "DSPP Connection Thread Player " + std::to_string(ds->controller.number);
+    SetCurrentThreadName(title);
+    if(ds->controller.hid_dev == nullptr){
+        DS_LOG_WARNING("Controller disconnected : Player/ID " + std::to_string(ds->controller.number));
+        ds->controller.is_connected = false;
+        return;
+    }
     hid_set_nonblocking(ds->controller.hid_dev, 1);
     int reportSize = 0;
     std::vector<uint8_t> buffer;
@@ -191,11 +198,13 @@ void DualSenseMgr::connectionThread(DualSense::DualSense* ds)
             amFail = 0;
         }
 
+
         if (amFail == 3) {
+            ds->controller.is_checking_connection = false;
             DS_LOG_WARNING("Controller disconnected : Player/ID " + std::to_string(ds->controller.number));
             ds->controller.is_connected = false; // Controller is Discomnected!
             seenDevicePaths.erase(hid_get_device_info(ds->controller.hid_dev)->path);
-            controllers.erase(ds->controller.number); // A controller already.
+            controllers.erase(ds->controller.number-1); // A controller already.
         }
         
         if (amFail == 0) {
